@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Productor - Sistema Agropecuario</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1>Nuevo Registro Agropecuario YyY</h1>
+    </div>
+  </header>
+
+  <main class="container form-container">
+    <% if (error) { %>
+      <div class="alert alert-danger">
+        <%= error %>
+      </div>
+      <% } %>
+
+        <form action="/registrar" method="POST" id="formRegistro">
+          <fieldset>
+            <legend>Datos Personales del Productor</legend>
+            <div class="form-group-grid">
+              <div>
+                <label for="cedula">Cédula de Identidad:</label>
+                <input type="text" id="cedula" name="cedula" required placeholder="Ej: V-12345678">
+              </div>
+              <div>
+                <label for="nombres">Nombres:</label>
+                <input type="text" id="nombres" name="nombres" required>
+              </div>
+              <div>
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" required>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Ubicación y Datos del Primer Predio (Finca)</legend>
+            <div class="form-group-grid">
+              <div>
+                <label for="nombre_finca">Nombre de la Finca:</label>
+                <input type="text" id="nombre_finca" name="nombre_finca" required placeholder="Ej: Finca La Guadalupe">
+              </div>
+              <div>
+                <label for="estado">Estado:</label>
+                <select id="estado" required>
+                  <option value="">Seleccione Estado</option>
+                  <% estados.forEach(e=> { %>
+                    <option value="<%= e.id %>">
+                      <%= e.nombre %>
+                    </option>
+                    <% }) %>
+                </select>
+              </div>
+              <div>
+                <label for="municipio">Municipio:</label>
+                <select id="municipio" required disabled>
+                  <option value="">Seleccione Municipio</option>
+                </select>
+              </div>
+              <div>
+                <label for="id_parroquia">Parroquia:</label>
+                <select id="id_parroquia" name="id_parroquia" required disabled>
+                  <option value="">Seleccione Parroquia</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group-grid" style="margin-top: 15px;">
+              <div>
+                <label for="sector">Sector / Dirección Detallada:</label>
+                <input type="text" id="sector" name="sector" required placeholder="Ej: Sector Los Llanos, Km 12">
+              </div>
+              <div>
+                <label for="coordenadas">Coordenadas Geográficas:</label>
+                <input type="text" id="coordenadas" name="coordenadas" placeholder="Ej: 9.9115, -67.3538">
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Marca Única de Hierro (Control de Coincidencias Patrón)</legend>
+            <div class="canvas-layout" style="display: flex; gap: 50px; align-items: center; padding: 10px;">
+
+              <div>
+                <label style="margin-bottom: 8px; display:block;">Opción A: Dibujar en el Lienzo Técnico</label>
+                <canvas id="canvasHierro" width="250" height="250"
+                  style="border: 1px solid #ccc; background-color: #f9f9f9;"></canvas>
+                <div style="margin-top: 8px;">
+                  <button type="button" id="btnLimpiar" class="btn btn-secondary">Limpiar Lienzo</button>
+                </div>
+              </div>
+
+              <div style="flex: 1;">
+                <label for="fileArchivo" style="margin-bottom: 8px; display:block;">Opción B: Cargar Imagen
+                  (PNG)</label>
+                <input type="file" id="fileArchivo" accept="image/png" class="file-input">
+                <small style="color:#666; display:block; margin-top:5px;">Se estandarizará la resolución automáticamente
+                  para validación de patrones.</small>
+              </div>
+
+            </div>
+            <input type="hidden" name="marca_canvas" id="marca_canvas">
+          </fieldset>
+
+          <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: flex-end;">
+            <a href="/" class="btn btn-secondary" style="text-decoration: none; line-height: 2.2;">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Validar y Registrar en Sistema</button>
+          </div>
+        </form>
+  </main>
+
+  <script src="/js/canvas.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Gestión Agropecuaria Nacional</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="container header-flex">
+      <h1>Registro Nacional de Productores y Hierros YyY</h1>
+      <a href="/registrar" class="btn btn-primary">Registrar Productor</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <% if (success) { %>
+      <div class="alert alert-success">
+        <%= success %>
+      </div>
+      <% } %>
+        <% if (error) { %>
+          <div class="alert alert-danger">
+            <%= error %>
+          </div>
+          <% } %>
+
+            <section class="filter-box">
+              <form action="/" method="GET" class="filter-form">
+                <label for="estatus">Filtrar Listado por Estatus:</label>
+                <select name="estatus" id="estatus" onchange="this.form.submit()">
+                  <option value="">Todos los productores</option>
+                  <option value="Activo" <%=estatusActual==='Activo' ? 'selected' : '' %>>Activos</option>
+                  <option value="Inactivo" <%=estatusActual==='Inactivo' ? 'selected' : '' %>>Inactivos</option>
+                </select>
+              </form>
+            </section>
+
+            <section class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cédula</th>
+                    <th>Productor</th>
+                    <th>Fincas</th>
+                    <th>Marca Única (Hierro)</th>
+                    <th>Estatus</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (productores.length===0) { %>
+                    <tr>
+                      <td colspan="6" style="text-align: center; color: #666;">No hay productores registrados bajo este
+                        criterio.</td>
+                    </tr>
+                    <% } %>
+                      <% productores.forEach(p=> { %>
+                        <tr>
+                          <td><strong>
+                              <%= p.cedula %>
+                            </strong></td>
+                          <td>
+                            <%= p.nombres %>
+                              <%= p.apellidos %>
+                          </td>
+                          <td><span class="badge badge-info">
+                              <%= p.total_predios %> Predio(s)
+                            </span></td>
+                          <td>
+                            <img src="<%= p.imagen_url %>" alt="Hierro" class="img-thumbnail">
+                          </td>
+                          <td>
+                            <span class="badge <%= p.estatus === 'Activo' ? 'badge-success' : 'badge-danger' %>">
+                              <%= p.estatus %>
+                            </span>
+                          </td>
+                          <td>
+                            <form action="/productor/estatus/<%= p.id %>" method="POST" style="margin:0;">
+                              <input type="hidden" name="estatus"
+                                value="<%= p.estatus === 'Activo' ? 'Inactivo' : 'Activo' %>">
+                              <button type="submit" class="btn btn-secondary">
+                                Marcar como <%= p.estatus==='Activo' ? 'Inactivo' : 'Activo' %>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+              </table>
+            </section>
+  </main>
+</body>
+
+</html>
